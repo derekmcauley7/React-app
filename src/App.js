@@ -1,23 +1,21 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {  
-  const [title, setTitle] = useState("");
-  const [colour, setColour] = useState("#000000");
-  const submit = (e) => {
-    e.preventDefault();
+  const [data, setData] = useState(null); 
+  useEffect(() =>   {
+    fetch(
+      'https://api.github.com/users/derekmcauley7'
+    ).then((response) => response.json()).then(setData)
+  }, []);
 
-    alert(`title ${title}, colour ${colour}`);
-  };
+  if(data)
+    return (
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    );  
 
   return (
-    <div className="App">
-      <form onSubmit={submit}>
-        <input value={title} onChange={event => setTitle(event.target.value)} type="text" placeholder='colour title'/>
-        <input value={colour} onChange={event => setColour(event.target.value)} type="color"/>
-        <button>Add</button>
-      </form>
-    </div>
+    <h1>Data</h1>
   );
 }
 
